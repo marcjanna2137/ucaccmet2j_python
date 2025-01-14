@@ -1,0 +1,20 @@
+# My attempts at part 3
+
+# import csv
+import csv
+# read csv file to a list of dictionaries
+with open('stations.csv') as file:
+    stations_data = list (csv.DictReader(file))
+
+print (stations_data)
+
+for city in stations_data: 
+  city_name = city['Location']
+    city_data = []
+    for city in stations_data:
+        for measurement in precipitation: 
+            if measurement ['station'] == city ['Station']: 
+                city_data.append(measurement)
+
+results = {f'{city_name}' : city_data} 
+print (results)

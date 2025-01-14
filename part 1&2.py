@@ -1,6 +1,9 @@
 # import json package
 import json 
 
+# import string 
+import string 
+
 # open the file with precipitation measurements
 with open('precipitation.json') as file:
     precipitation = json.load(file)
@@ -8,15 +11,12 @@ with open('precipitation.json') as file:
 # create an empty dictionary for measurements for Seattle
 seattle_measurements =[]
 
-
-# loop over all the measurements data and append the ones with a seattle station code to the seattle_measurement dictionary
+#loop over all the measurements data and append the ones with a seattle station code to the seattle_measurement dictionary
 for measurement in precipitation: 
     if measurement ['station'] == 'GHCND:US1WAKG0038': 
         seattle_measurements.append(measurement)
 
-# print seattle_measurments to check 
-print (seattle_measurements)  
-import string 
+# create an empty list for each month 
 january = []
 february = []
 march = []
@@ -29,6 +29,8 @@ september = []
 october = []
 november = []
 december = []
+
+# create dictionary with lists corresponding to each month created above with keys being the names of each month
 seattle_monthly = {
     'January': january, 
     'February' : february, 
@@ -43,6 +45,8 @@ seattle_monthly = {
     'November' : november, 
     'December': december
     }
+
+# loop over the precipitation data filtered for settle measurements to assign the measurements to a list corresponding to a month in which these measurements were taken
 for measurement in seattle_measurements: 
     if measurement ['date'].startswith ('2010-01'): 
         january.append (measurement ['value'])
@@ -79,26 +83,27 @@ for measurement in seattle_measurements:
                                             else: 
                                                 december.append (measurement ['value'])
 
-print (seattle_monthly)
 
+# create an empty list for total monthly precipitation
 total_monthly_precipitation = []
+
+# calculate the total precipitation for each month
 for month in seattle_monthly: 
     total_monthly_precipitation.append (sum (seattle_monthly[month]))
 
-print (total_monthly_precipitation)
-
+# calculate the total yearly precipitation for Seattle by adding up total monthly values 
 total_yearly_precipitation = sum (total_monthly_precipitation)
-print (total_yearly_precipitation)
 
+# create an empty list for relative monthly precipitation
 relative_monthly_precipitation = []
 
+# loop over the total values for each month and divide it by total yearly precipitation and append it to the relative precipitation list
 for monthly_value in total_monthly_precipitation: 
     relative_monthly_precipitation.append (monthly_value/total_yearly_precipitation)
 
-print (relative_monthly_precipitation)
-
+# create a dictonary that summarizes the results 
 results = {'Total Monthly': total_monthly_precipitation, 'Relative Monthly': relative_monthly_precipitation}
 
-# This is where we actually open the file and write to it
+# write the results in a json file
 with open('results.json', 'w', encoding='utf-8') as file:
     json.dump(results, file)
