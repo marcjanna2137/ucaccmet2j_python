@@ -87,9 +87,18 @@ for month in seattle_monthly:
 
 print (total_monthly_precipitation)
 
+total_yearly_precipitation = sum (total_monthly_precipitation)
+print (total_yearly_precipitation)
+
+relative_monthly_precipitation = []
+
+for monthly_value in total_monthly_precipitation: 
+    relative_monthly_precipitation.append (monthly_value/total_yearly_precipitation)
+
+print (relative_monthly_precipitation)
+
+results = {'Total Monthly': total_monthly_precipitation, 'Relative Monthly': relative_monthly_precipitation}
+
 # This is where we actually open the file and write to it
 with open('results.json', 'w', encoding='utf-8') as file:
-    json.dump(total_monthly_precipitation, file)
-
-
-
+    json.dump(results, file)
